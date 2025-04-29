@@ -2,7 +2,7 @@
 
 # Check if a project file is valid
 # @param $1 - Project File
-function check_project() {
+function ql_check_project() {
     # Check the arguments
     if [[ $# -ne 1 ]]; then
         echo "No Project given to check_project"
@@ -26,7 +26,7 @@ function check_project() {
 # This does not check if the file already exists
 # @param $1 - Project File
 # @param $2 - Source file to add (Path from project base)
-function add_file() {
+function ql_add_file() {
     # Check the arguments
     if [[ $# -ne 2 ]]; then
         echo "Failed to add file"
@@ -34,7 +34,7 @@ function add_file() {
         return 1
     fi
     # Check if the project is valid
-    check_project $1
+    ql_check_project $1
     if [[ $? != 0 ]]; then
         echo "Invalid Project"
 return 2
@@ -53,7 +53,7 @@ return 2
 # @param $1 - Project File (*.qsf)
 # @param $2 - Pin name (PIN_xxx)
 # @param $3 - Assignment Name
-function add_pin() {
+function ql_add_pin() {
     if [[ $# -ne 3 ]]; then
         echo "add_pin called with incorrect arguments"
         return 1
@@ -83,12 +83,12 @@ function add_pin() {
 
 # Compile the project
 # @param $1 - Project File
-function build() {
+function ql_compile() {
     # Check if the project is valid
     if [[ $# -ne 1 ]]; then
         echo "Compile called with an invalid number of arguments"
     fi
-    check_project "$1"
+    ql_check_project "$1"
 
     echo "Compiling $1"
     quartus_map "$1"
@@ -102,7 +102,7 @@ function build() {
 }
 
 # Flash the program to the development board
-function flash() {
+function ql_flash() {
     if [[ $# -ne 1 ]]; then
         echo "Flash called without a target file"
         return 1
@@ -113,7 +113,7 @@ function flash() {
 
 
 # Sample Usage
-# add_file  "../MiniSRC/miniSRC.qpf" ../MiniSRC/Processor/REG32.v
-# add_pin "../MiniSRC/miniSRC.qsf" "PIN_B7" "VGA_SYNC"
-# build "../MiniSRC/miniSRC.qpf"
+# ql_add_file  "../MiniSRC/miniSRC.qpf" ../MiniSRC/Processor/REG32.v
+# ql_add_pin "../MiniSRC/miniSRC.qsf" "PIN_B7" "VGA_SYNC"
+# ql_compile "../MiniSRC/miniSRC.qpf"
 
